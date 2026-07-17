@@ -24,7 +24,306 @@ An ESP32-based IoT smart farming system with Firebase cloud integration.
 -   4-Channel Relay
 -   LCD 20x4 I2C
 -   Pump, Fan, Humidifier, Grow Light
-  ## Author
+
+# 🌱 Smart Farming V2.0
+
+> An ESP32-based Smart Farming and Greenhouse Automation System with IoT Monitoring using Firebase Realtime Database.
+
+![Platform](https://img.shields.io/badge/Platform-ESP32-blue)
+![Language](https://img.shields.io/badge/Language-C%2B%2B-orange)
+![IoT](https://img.shields.io/badge/IoT-Firebase-yellow)
+![Status](https://img.shields.io/badge/Status-Completed-brightgreen)
+
+---
+
+# 📌 Project Overview
+
+Smart Farming V2.0 is an intelligent greenhouse automation system developed using an ESP32 microcontroller. The system continuously monitors environmental conditions and automatically controls farm devices such as:
+
+- 💧 Water Pump
+- 💨 Ventilation Fan
+- 💡 Grow Light
+- 🌫️ Humidifier
+
+The project integrates with **Firebase Realtime Database**, allowing real-time monitoring and remote control through a web dashboard.
+
+---
+
+# 🚀 Features
+
+### 🌡 Environment Monitoring
+
+- Temperature Monitoring (DHT22)
+- Humidity Monitoring
+- Soil Moisture Monitoring (2 Sensors)
+- Water Tank Level Monitoring
+- Humidifier Tank Monitoring
+- Light Intensity Monitoring (LDR)
+
+---
+
+### ⚙ Automatic Control
+
+The ESP32 automatically controls:
+
+- Water Pump
+- Exhaust Fan
+- Grow Light
+- Humidifier
+
+based on configurable threshold values.
+
+---
+
+### 📡 IoT Features
+
+- Wi-Fi Connectivity
+- Firebase Realtime Database
+- Live Sensor Upload
+- Device Status Upload
+- Alarm Upload
+- Remote Manual Control
+- Crop Selection
+- Auto/Manual Mode
+
+---
+
+### 📟 User Interface
+
+20x4 I2C LCD
+
+Displays:
+
+- Environment Data
+- Soil Moisture
+- Tank Levels
+- Relay Status
+- Wi-Fi Status
+- Firebase Status
+- System Information
+- Alarm Status
+
+---
+
+### 🚨 Safety Features
+
+- Low Water Tank Alarm
+- Low Humidifier Tank Alarm
+- DHT Failure Detection
+- Emergency Alarm
+- Three Dedicated Buzzers
+
+---
+
+# 🛠 Hardware Used
+
+| Component | Quantity |
+|-----------|----------|
+| ESP32 DevKit V1 | 1 |
+| DHT22 Sensor | 1 |
+| Capacitive Soil Moisture Sensor | 2 |
+| HW-038 Water Level Sensor | 2 |
+| LDR Module | 1 |
+| 4 Channel Relay Module | 1 |
+| 20x4 I2C LCD | 1 |
+| SSD1306 OLED Display | 1 |
+| Buzzers | 3 |
+| Water Pump | 1 |
+| Humidifier | 1 |
+| DC Fan | 1 |
+| LED Grow Light | 1 |
+
+---
+
+# 🏗 System Architecture
+
+```
+                 Firebase
+                     ▲
+                     │
+             WiFi Communication
+                     │
+               ESP32 Controller
+                     │
+      ┌──────────────┼───────────────┐
+      │              │               │
+   Sensors        Automation      Display
+      │              │               │
+      ▼              ▼               ▼
+ DHT22            Relay Module   LCD + OLED
+ Soil             Pump
+ LDR              Fan
+ Tank             Light
+                  Humidifier
+```
+
+---
+
+# 📁 Project Structure
+
+```
+Smart_Farming_V2
+│
+├── Smart_Farming_V2.ino
+│
+├── config.h
+├── datatypes.h
+├── version.h
+│
+├── sensors.cpp
+├── relay.cpp
+├── automation.cpp
+├── display.cpp
+├── scheduler.cpp
+│
+├── wifi_manager.cpp
+├── firebase_manager.cpp
+│
+├── alarm_manager.cpp
+├── debug.cpp
+│
+├── pump_controller.cpp
+├── fan_controller.cpp
+├── light_controller.cpp
+├── humidifier_controller.cpp
+│
+├── settings_manager.cpp
+├── preferences_manager.cpp
+│
+└── README.md
+```
+
+---
+
+# 🔄 Working Principle
+
+### Step 1
+
+ESP32 boots and initializes all sensors and peripherals.
+
+↓
+
+### Step 2
+
+Sensors continuously read:
+
+- Temperature
+- Humidity
+- Soil Moisture
+- Water Tank
+- Humidifier Tank
+- Light Intensity
+
+↓
+
+### Step 3
+
+Sensor values are displayed on the LCD.
+
+↓
+
+### Step 4
+
+Automation Controller compares readings with threshold values.
+
+↓
+
+### Step 5
+
+Relays automatically control
+
+- Pump
+- Fan
+- Grow Light
+- Humidifier
+
+↓
+
+### Step 6
+
+ESP32 uploads all information to Firebase.
+
+↓
+
+### Step 7
+
+User can monitor and control the system remotely.
+
+---
+
+# 📊 Firebase Database
+
+```
+/
+│
+├── sensors
+│     ├── temperature
+│     ├── humidity
+│     ├── soil_moisture
+│     ├── water_level
+│     └── light
+│
+├── devices
+│     ├── pump
+│     ├── fan
+│     ├── light
+│     └── humidifier
+│
+├── alerts
+│     ├── low_water
+│     ├── dht_failure
+│     └── emergency
+│
+└── config
+      ├── auto_mode
+      └── selected_crop
+```
+
+---
+
+# ⚙ Software Used
+
+- Arduino IDE
+- ESP32 Board Package
+- Firebase ESP Client Library
+- LiquidCrystal I2C
+- DHT Library
+- Preferences Library
+- WiFi Library
+
+---
+
+# 📈 Future Improvements
+
+- AI-based Crop Recommendation
+- Disease Detection using Camera
+- Weather Forecast Integration
+- OTA Firmware Updates
+- Mobile Application
+- Solar Power System
+- Voice Assistant Support
+- MQTT Communication
+- Data Analytics Dashboard
+
+---
+
+# 👨‍💻 Developed By
+
+**Rupam Ghosh**
+
+B.Tech in Electronics & Communication Engineering
+
+Embedded Systems | IoT | ESP32 | Firebase | Automation
+
+---
+
+# 📜 License
+
+This project is developed for educational and research purposes.
+
+Feel free to use and improve the project.
+
+⭐ If you found this project useful, please consider giving it a star!
 
 ## SOFTWARE
 
