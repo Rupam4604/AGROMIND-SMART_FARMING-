@@ -1,0 +1,15 @@
+{
+  "name": "agromind",
+  "version": "1.0.0",
+  "description": "AgroMind — Smart Farming AI Platform",
+  "scripts": {
+    "start": "live-server public --port=3000 --open=/index.html",
+    "dev":   "live-server public --port=3000 --open=/index.html",
+    "convert": "python fix_convert.py"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  },
+  "keywords": ["agromind", "smart-farming", "ai"],
+  "license": "MIT"
+}

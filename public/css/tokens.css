@@ -1,0 +1,88 @@
+/* ═══════════════════════════════════════════════════
+   tokens.css — DESIGN TOKENS (Light & Dark Themes)
+   Edit colors, spacing, fonts here.
+═══════════════════════════════════════════════════ */
+
+:root {
+  /* ── Brand greens ── */
+  --g1: #2D6A4F;
+  --g2: #40916C;
+  --g3: #52B788;
+  --g4: #74C69D;
+  --g5: #B7E4C7;
+
+  /* ── Accent colors ── */
+  --sun:  #F9A825;
+  --sky:  #1565C0;
+  --rain: #0288D1;
+
+  /* ── Status colors ── */
+  --err:       #D32F2F;
+  --err-soft:  #FFEBEE;
+  --warn:      #E65100;
+  --warn-soft: #FFF3E0;
+  --ok:        #2E7D32;
+  --ok-soft:   #E8F5E9;
+
+  /* ── Surfaces (Light) ── */
+  --bg:       #F0F4F0;
+  --bg2:      #E8F0E8;
+  --surface:  #FFFFFF;
+  --surface2: #F7FAF7;
+  --surface3: #EEF5EE;
+
+  /* ── Text (Light) ── */
+  --text:  #111811;
+  --text2: #3D5A3E;
+  --text3: #6B896C;
+
+  /* ── Borders & Shadows (Light) ── */
+  --border:  rgba(45, 106, 79, .15);
+  --border2: rgba(45, 106, 79, .08);
+  --shadow:  rgba(45, 106, 79, .12);
+  --shadow2: rgba(0, 0, 0, .06);
+
+  /* ── Layout ── */
+  --nav-w:    260px;
+  --header-h: 64px;
+
+  /* ── Shape ── */
+  --radius:    16px;
+  --radius-sm: 10px;
+  --radius-xs: 6px;
+
+  /* ── Typography ── */
+  --font: 'Inter', sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+
+  /* ── Motion ── */
+  --trans: .25s cubic-bezier(.4, 0, .2, 1);
+}
+/* ── Proper Dark Theme Overrides ── */
+[data-theme="dark"] {
+  /* Backgrounds */
+  --bg:       #050806;
+  --bg2:      #08110A;
+  --surface:  #0D1710;
+  --surface2: #111F15;
+  --surface3: #16291B;
+
+  /* Text */
+  --text:  #F1FFF4;
+  --text2: #B9DCC0;
+  --text3: #7E9F86;
+
+  /* Borders & Shadows */
+  --border:  rgba(116, 198, 157, .20);
+  --border2: rgba(116, 198, 157, .10);
+
+  --shadow:  rgba(0, 0, 0, .65);
+  --shadow2: rgba(0, 0, 0, .45);
+
+  /* Brand */
+  --g1: #2D6A4F;
+  --g2: #40916C;
+  --g3: #52B788;
+  --g4: #74C69D;
+  --g5: #95D5B2;
+}

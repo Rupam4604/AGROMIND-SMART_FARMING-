@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AgroMind — Smart Farming AI Platform</title>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.11.0/dist/tf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+
+<!-- BOOT -->
+<div id="boot-screen">
+  <img src="logo.png" alt="AgroMind" style="width:260px;margin-bottom:16px;mix-blend-mode:screen;filter:brightness(1.8) contrast(1.4) saturate(1.3)">
+  <div class="boot-sub">Initialising AI engine…</div>
+  <div class="boot-bar"><div class="boot-fill" id="boot-fill"></div></div>
+</div>
+
+<div class="toast-container" id="toast-container"></div>
+
+<!-- LOGIN -->
+<div id="login-page">
+  <div class="login-card">
+<div class="login-brand">
+<img src="logo.png" alt="AgroMind" style="width:420px;margin-bottom:8px;display:block;margin-left:auto;margin-right:auto;mix-blend-mode:screen;filter:brightness(1.8) contrast(1.4) saturate(1.3)">
+  
+</div>
+    <div class="login-field">
+      <label>Email</label>
+      <input type="email" id="li-email" placeholder="Enter your email">
+    </div>
+    <div class="login-field">
+      <label>Password</label>
+      <input type="password" id="li-pass" placeholder="Enter password">
+    </div>
+    <button class="btn-login" onclick="doLogin()">Sign In →</button>
+   
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+
+  <header class="top-header">
+    <div style="display:flex;align-items:center;gap:12px">
+      <button class="btn-icon menu-toggle" onclick="toggleSidebar()">☰</button>
+      <a href="#" class="header-brand" onclick="return false">
+         <img src="logo.png" alt="AgroMind" style="width:66px;height:40px;object-fit:cover;border-radius:8px;mix-blend-mode:screen;filter:brightness(1.8) contrast(1.4) saturate(1.3)">
+      </a>
+    </div>
+    <div class="header-center">
+      <div class="header-loc">
+        <span>📍</span><span id="hdr-loc">Detecting…</span>
+        <span id="hdr-weather-icon">☁️</span>
+      </div>
+    </div>
+    <div class="header-actions">
+      <span class="header-time" id="hdr-time">--:--</span>
+      <button class="btn-icon" onclick="toggleDark()" id="dark-btn">🌙</button>
+      <button class="btn-icon notif-badge" id="notif-btn" data-count="3" onclick="goTo('notifications')">🔔</button>
+      <div class="user-avatar" onclick="goTo('settings')">F</div>
+    </div>
+  </header>
+
+  <div class="app-body">
+    <aside class="sidebar" id="sidebar">
+      <div class="nav-section-label">Main</div>
+      <div class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')"><span class="nav-icon">📊</span><span>Dashboard</span></div>
+      <div class="nav-item" data-page="crops" onclick="goTo('crops')"><span class="nav-icon">🌾</span><span>Crop Selection</span></div>
+      <div class="nav-item" data-page="control" onclick="goTo('control')"><span class="nav-icon">🎛️</span><span>Control Panel</span></div>
+      <div class="nav-section-label">AI & Monitoring</div>
+      <div class="nav-item" data-page="disease" onclick="goTo('disease')"><span class="nav-icon">🔬</span><span>Disease Detection</span></div>
+      <div class="nav-item" data-page="history" onclick="goTo('history')"><span class="nav-icon">📂</span><span>Scan History</span></div>
+      <div class="nav-item" data-page="notifications" onclick="goTo('notifications')"><span class="nav-icon">🔔</span><span>Notifications</span><span class="nav-badge" id="sidebar-notif-count">3</span></div>
+      <div class="nav-section-label">Account</div>
+      <div class="nav-item" data-page="settings" onclick="goTo('settings')"><span class="nav-icon">⚙️</span><span>Settings</span></div>
+      <div class="sidebar-footer">
+        <div class="sidebar-model-status">
+          <div class="sms-title">AI Model</div>
+          <div class="sms-pill loading" id="sms-pill"><span class="pill-dot"></span><span id="sms-label">Loading…</span></div>
+          <div style="font-size:11px;color:var(--text3);margin-top:8px;line-height:1.5">MobileNetV2</div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+
+      <!-- DASHBOARD -->
+      <div id="page-dashboard" class="page active">
+        <div class="page-header">
+          <div class="page-title">Dashboard</div>
+          <div class="page-subtitle"><span class="live-dot"></span><span>updates every 5s</span><span style="margin-left:8px;font-size:12px;color:var(--text3)" id="dash-timestamp">—</span></div>
+        </div>
+         <!-- Outdoor top cards -->
+<div class="grid-2" style="margin-bottom:24px">
+  <div class="sensor-card sc-temp">
+    <div class="sc-header">
+      <div class="sc-icon-wrap">🌡️</div>
+      <div class="sc-badge live" id="temp-badge">LIVE</div>
+    </div>
+    <div class="sc-label">Temperature</div>
+    <div class="sc-value">
+      <span class="sc-num" id="val-temp">--</span>
+      <span class="sc-unit">°C</span>
+    </div>
+    <div class="sc-sub">
+      <span id="weather-icon-dash">☁️</span>
+      <span id="weather-desc-dash">Fetching…</span>
+    </div>
+    <div class="sc-sub" style="margin-top:4px">
+      <span style="font-size:10px;opacity:.6">Feels: <span id="val-feels">--</span>°C</span>
+    </div>
+  </div>
+  <div class="sensor-card sc-humidity">
+    <div class="sc-header">
+      <div class="sc-icon-wrap">💧</div>
+      <div class="sc-badge live">LIVE</div>
+    </div>
+    <div class="sc-label">Humidity</div>
+    <div class="sc-value">
+      <span class="sc-num" id="val-humidity">--</span>
+      <span class="sc-unit">%</span>
+    </div>
+    <div class="sc-sub">💨 Wind: <span id="val-wind">--</span> km/h</div>
+    <div class="sc-sub" style="margin-top:4px">
+      <span style="font-size:10px;opacity:.6">Feels: <span id="val-feels2">--</span>°C</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── INDOOR SENSORS BOX ── -->
+<div class="card" style="margin-bottom:24px">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px;
+    padding-bottom:14px;border-bottom:1px solid var(--border)">
+    <span style="font-size:18px">🗄️</span>
+    <div>
+      <div style="font-size:14px;font-weight:700;color:var(--text1)">
+        Indoor Sensors
+      </div>
+      <div style="font-size:11px;color:var(--text3);margin-top:2px">
+        Live from Firebase Database · updates every 5s
+      </div>
+    </div>
+    <div class="sc-badge live" style="margin-left:auto">DB</div>
+  </div>
+
+  <div class="grid-3">
+
+    <!-- Soil Moisture -->
+    <div class="device-card">
+      <div class="device-icon-wrap"
+        style="background:linear-gradient(135deg,rgba(34,197,94,.18),rgba(21,128,61,.12))">
+        🌱
+      </div>
+      <div class="device-info">
+        <div class="device-name">Soil Moisture</div>
+        <div class="device-sub">
+          <span id="val-moisture">--</span>
+        </div>
+      </div>
+      <div class="status-pill off" id="indoor-moist-pill">--</div>
+    </div>
+
+    <!-- Indoor Temperature -->
+    <div class="device-card">
+      <div class="device-icon-wrap"
+        style="background:linear-gradient(135deg,rgba(56,189,248,.18),rgba(14,116,144,.12))">
+        🌡️
+      </div>
+      <div class="device-info">
+        <div class="device-name">Indoor Temp</div>
+        <div class="device-sub">
+          <span id="val-indoor-temp">--</span>
+        </div>
+      </div>
+      <div class="status-pill off" id="indoor-temp-pill">--</div>
+    </div>
+
+    <!-- Indoor Humidity -->
+    <div class="device-card">
+      <div class="device-icon-wrap"
+        style="background:linear-gradient(135deg,rgba(45,212,191,.18),rgba(17,94,89,.12))">
+        💦
+      </div>
+      <div class="device-info">
+        <div class="device-name">Indoor Humidity</div>
+        <div class="device-sub">
+          <span id="val-indoor-humidity">--</span>
+        </div>
+      </div>
+      <div class="status-pill off" id="indoor-hum-pill">--</div>
+    </div>
+
+    <!-- Water Level -->
+    <div class="device-card">
+      <div class="device-icon-wrap"
+        style="background:linear-gradient(135deg,rgba(96,165,250,.18),rgba(29,78,216,.12))">
+        🪣
+      </div>
+      <div class="device-info">
+        <div class="device-name">Water Level</div>
+        <div class="device-sub">
+          <span id="val-water-level">--</span>
+        </div>
+      </div>
+      <div class="status-pill off" id="indoor-water-pill">--</div>
+    </div>
+
+    <!-- Grow Light -->
+    <div class="device-card">
+      <div class="device-icon-wrap"
+        style="background:linear-gradient(135deg,rgba(249,168,37,.18),rgba(180,83,9,.12))">
+        💡
+      </div>
+      <div class="device-info">
+        <div class="device-name">Light Intensity</div>
+        <div class="device-sub">
+          <span id="val-grow-light-hrs">--</span>
+        </div>
+      </div>
+      <div class="status-pill off" id="indoor-grow-pill">--</div>
+    </div>
+
+  </div>
+</div>
+        <div class="grid-2-1" style="margin-bottom:24px">
+          <div class="card">
+            <div class="card-title">System Status</div>
+            <div class="card-sub"><span id="mode-label-dash">Auto mode</span></div>
+            <div class="grid-3">
+              <div class="device-card">
+                <div class="device-icon-wrap" style="background:linear-gradient(135deg,rgba(2,136,209,.15),rgba(3,169,244,.1))">💦</div>
+                <div class="device-info"><div class="device-name">Irrigation Pump</div><div class="device-sub"></div></div>
+                <div class="status-pill off" id="dash-pump">OFF</div>
+              </div>
+              <div class="device-card">
+                <div class="device-icon-wrap" style="background:linear-gradient(135deg,rgba(230,81,0,.12),rgba(255,152,0,.08))">🌀</div>
+                <div class="device-info"><div class="device-name">Exhaust Fan</div><div class="device-sub"></div></div>
+                <div class="status-pill off" id="dash-fan">OFF</div>
+              </div>
+              <div class="device-card">
+                <div class="device-icon-wrap" style="background:linear-gradient(135deg,rgba(249,168,37,.15),rgba(251,192,45,.08))">💡</div>
+                <div class="device-info"><div class="device-name">Grow Light</div><div class="device-sub"></div></div>
+                <div class="status-pill on" id="dash-light">ON</div>
+              </div>
+              <div class="device-card">
+               <div class="device-icon-wrap" style="background:linear-gradient(135deg,rgba(33,150,243,.12),rgba(3,169,244,.08))">💧</div>
+               <div class="device-info"><div class="device-name">Humidifier</div><div class="device-sub">Humidity Control</div></div>
+               <div class="status-pill off" id="dash-humidifier">OFF</div>
+              </div>
+            </div>
+          </div>
+          <div class="weather-widget">
+            <div class="ww-top"><div><div class="ww-label">Live Weather</div><div class="ww-loc">📍 <span id="ww-city">Detecting…</span></div></div><div class="ww-icon" id="ww-icon">⛅</div></div>
+            <div class="ww-temp"><span id="ww-temp">--</span>°</div>
+            <div class="ww-desc" id="ww-desc">Fetching weather data…</div>
+            <div class="ww-stats">
+              <div class="ww-stat"><div class="ww-stat-val" id="ww-hum">--%</div><div class="ww-stat-key">Humidity</div></div>
+              <div class="ww-stat"><div class="ww-stat-val" id="ww-wind">-- km/h</div><div class="ww-stat-key">Wind</div></div>
+              <div class="ww-stat"><div class="ww-stat-val" id="ww-feels">--°</div><div class="ww-stat-key">Feels like</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="grid-3">
+          <div class="card"><div class="card-title">🌡️ Temperature History</div><div class="card-sub">Last 20 readings</div><div class="chart-wrap"><canvas id="chart-temp"></canvas></div></div>
+          <div class="card"><div class="card-title">💧 Humidity History</div><div class="card-sub">Last 20 readings</div><div class="chart-wrap"><canvas id="chart-hum"></canvas></div></div>
+        </div>
+        <!-- Indoor Sensor History -->
+<div class="grid-3" style="margin-bottom:24px">
+  <div class="card"><div class="card-title">🌱 Soil Moisture History</div><div class="card-sub">Last 20 readings · Firebase</div><div class="chart-wrap"><canvas id="chart-indoor-moist"></canvas></div></div>
+  <div class="card"><div class="card-title">🌡️ Indoor Temperature History</div><div class="card-sub">Last 20 readings · Firebase</div><div class="chart-wrap"><canvas id="chart-indoor-temp"></canvas></div></div>
+  <div class="card"><div class="card-title">💦 Indoor Humidity History</div><div class="card-sub">Last 20 readings · Firebase</div><div class="chart-wrap"><canvas id="chart-indoor-hum"></canvas></div></div>
+</div>
+      </div>
+
+<!-- CROPS -->
+<div id="page-crops" class="page">
+  <div class="page-header"><div class="page-title">Crop Selection</div><div class="page-subtitle">Select your active crop for monitoring</div></div>
+  <div class="crop-grid">
+    <div class="crop-card selected" id="crop-tomato" onclick="selectCrop('tomato',this)">
+      <span class="crop-emoji">🍅</span><div class="crop-name">Tomato</div>
+      <div class="crop-desc">Warm-season crop. Requires consistent watering and moderate humidity.</div>
+      <div class="crop-moisture-bar"><div class="cmb-label"><span>Soil Moisture</span><span>60–80%</span></div><div class="cmb-track"><div class="cmb-fill" style="width:70%"></div></div></div>
+      <div class="crop-rec">Optimal: 60% – 80%</div>
+    </div>
+    <div class="crop-card" id="crop-potato" onclick="selectCrop('potato',this)">
+      <span class="crop-emoji">🥔</span><div class="crop-name">Potato</div>
+      <div class="crop-desc">Cool-season crop. Needs well-drained soil and consistent moisture.</div>
+      <div class="crop-moisture-bar"><div class="cmb-label"><span>Soil Moisture</span><span>65–85%</span></div><div class="cmb-track"><div class="cmb-fill" style="width:75%"></div></div></div>
+      <div class="crop-rec">Optimal: 65% – 85%</div>
+    </div>
+    <div class="crop-card" id="crop-pepper" onclick="selectCrop('pepper',this)">
+      <span class="crop-emoji">🫑</span><div class="crop-name">Pepper</div>
+      <div class="crop-desc">Warm-season crop. Drought-tolerant once established.</div>
+      <div class="crop-moisture-bar"><div class="cmb-label"><span>Soil Moisture</span><span>55–75%</span></div><div class="cmb-track"><div class="cmb-fill" style="width:65%"></div></div></div>
+      <div class="crop-rec">Optimal: 55% – 75%</div>
+    </div>
+    <div class="crop-card" id="crop-corn" onclick="selectCrop('corn',this)">
+      <span class="crop-emoji">🌽</span><div class="crop-name">Corn</div>
+      <div class="crop-desc">Heavy feeder requiring consistent moisture especially during tasseling.</div>
+      <div class="crop-moisture-bar"><div class="cmb-label"><span>Soil Moisture</span><span>60–80%</span></div><div class="cmb-track"><div class="cmb-fill" style="width:70%"></div></div></div>
+      <div class="crop-rec">Optimal: 60% – 80%</div>
+    </div>
+    <div class="crop-card" id="crop-apple" onclick="selectCrop('apple',this)">
+      <span class="crop-emoji">🍎</span><div class="crop-name">Apple</div>
+      <div class="crop-desc">Perennial fruit tree. Needs deep watering and well-drained soil.</div>
+      <div class="crop-moisture-bar"><div class="cmb-label"><span>Soil Moisture</span><span>50–75%</span></div><div class="cmb-track"><div class="cmb-fill" style="width:62%"></div></div></div>
+      <div class="crop-rec">Optimal: 50% – 75%</div>
+    </div>
+    <div class="crop-card" id="crop-grape" onclick="selectCrop('grape',this)">
+      <span class="crop-emoji">🍇</span><div class="crop-name">Grape</div>
+      <div class="crop-desc">Drought-tolerant vine. Deep roots prefer dry spells between watering.</div>
+      <div class="crop-moisture-bar"><div class="cmb-label"><span>Soil Moisture</span><span>40–65%</span></div><div class="cmb-track"><div class="cmb-fill" style="width:52%"></div></div></div>
+      <div class="crop-rec">Optimal: 40% – 65%</div>
+    </div>
+    <div class="crop-card" id="crop-strawberry" onclick="selectCrop('strawberry',this)">
+      <span class="crop-emoji">🍓</span><div class="crop-name">Strawberry</div>
+      <div class="crop-desc">Shallow-rooted crop requiring frequent light watering.</div>
+      <div class="crop-moisture-bar"><div class="cmb-label"><span>Soil Moisture</span><span>65–85%</span></div><div class="cmb-track"><div class="cmb-fill" style="width:75%"></div></div></div>
+      <div class="crop-rec">Optimal: 65% – 85%</div>
+    </div>
+    <div class="crop-card" id="crop-orange" onclick="selectCrop('orange',this)">
+      <span class="crop-emoji">🍊</span><div class="crop-name">Orange</div>
+      <div class="crop-desc">Citrus tree preferring well-drained soil and deep infrequent watering.</div>
+      <div class="crop-moisture-bar"><div class="cmb-label"><span>Soil Moisture</span><span>50–75%</span></div><div class="cmb-track"><div class="cmb-fill" style="width:62%"></div></div></div>
+      <div class="crop-rec">Optimal: 50% – 75%</div>
+    </div>
+    <div class="crop-card" id="crop-peach" onclick="selectCrop('peach',this)">
+      <span class="crop-emoji">🍑</span><div class="crop-name">Peach</div>
+      <div class="crop-desc">Stone fruit requiring well-drained soil and moderate consistent moisture.</div>
+      <div class="crop-moisture-bar"><div class="cmb-label"><span>Soil Moisture</span><span>55–75%</span></div><div class="cmb-track"><div class="cmb-fill" style="width:65%"></div></div></div>
+      <div class="crop-rec">Optimal: 55% – 75%</div>
+    </div>
+    <div class="crop-card" id="crop-blueberry" onclick="selectCrop('blueberry',this)">
+      <span class="crop-emoji">🫐</span><div class="crop-name">Blueberry</div>
+      <div class="crop-desc">Acid-loving shrub requiring consistently moist, well-drained soil.</div>
+      <div class="crop-moisture-bar"><div class="cmb-label"><span>Soil Moisture</span><span>60–80%</span></div><div class="cmb-track"><div class="cmb-fill" style="width:70%"></div></div></div>
+      <div class="crop-rec">Optimal: 60% – 80%</div>
+    </div>
+    <div class="crop-card" id="crop-cherry" onclick="selectCrop('cherry',this)">
+      <span class="crop-emoji">🍒</span><div class="crop-name">Cherry</div>
+      <div class="crop-desc">Stone fruit tree needing moderate moisture and good drainage.</div>
+      <div class="crop-moisture-bar"><div class="cmb-label"><span>Soil Moisture</span><span>55–75%</span></div><div class="cmb-track"><div class="cmb-fill" style="width:65%"></div></div></div>
+      <div class="crop-rec">Optimal: 55% – 75%</div>
+    </div>
+    <div class="crop-card" id="crop-squash" onclick="selectCrop('squash',this)">
+      <span class="crop-emoji">🎃</span><div class="crop-name">Squash</div>
+      <div class="crop-desc">Fast-growing warm-season crop needing consistent deep watering.</div>
+      <div class="crop-moisture-bar"><div class="cmb-label"><span>Soil Moisture</span><span>65–85%</span></div><div class="cmb-track"><div class="cmb-fill" style="width:75%"></div></div></div>
+      <div class="crop-rec">Optimal: 65% – 85%</div>
+    </div>
+    <div class="crop-card" id="crop-soybean" onclick="selectCrop('soybean',this)">
+      <span class="crop-emoji">🫘</span><div class="crop-name">Soybean</div>
+      <div class="crop-desc">Legume requiring moderate moisture especially during pod filling.</div>
+      <div class="crop-moisture-bar"><div class="cmb-label"><span>Soil Moisture</span><span>55–75%</span></div><div class="cmb-track"><div class="cmb-fill" style="width:65%"></div></div></div>
+      <div class="crop-rec">Optimal: 55% – 75%</div>
+    </div>
+    <div class="crop-card" id="crop-raspberry" onclick="selectCrop('raspberry',this)">
+      <span class="crop-emoji">🍓</span><div class="crop-name">Raspberry</div>
+      <div class="crop-desc">Perennial cane fruit needing consistent moisture and good drainage.</div>
+      <div class="crop-moisture-bar"><div class="cmb-label"><span>Soil Moisture</span><span>60–80%</span></div><div class="cmb-track"><div class="cmb-fill" style="width:70%"></div></div></div>
+      <div class="crop-rec">Optimal: 60% – 80%</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">🌱 Current Selection: <span id="crop-detail-name" style="color:var(--g2)">Tomato</span></div>
+    <div class="grid-3" style="margin-top:20px">
+      <div style="text-align:center;padding:16px;background:var(--surface2);border-radius:var(--radius-sm)"><div style="font-size:28px;font-weight:800;color:var(--g2);font-family:var(--mono)" id="crop-min">60%</div><div style="font-size:12px;color:var(--text3);margin-top:4px">Min Moisture</div></div>
+      <div style="text-align:center;padding:16px;background:var(--surface2);border-radius:var(--radius-sm)"><div style="font-size:28px;font-weight:800;color:var(--g2);font-family:var(--mono)" id="crop-opt">70%</div><div style="font-size:12px;color:var(--text3);margin-top:4px">Optimal</div></div>
+      <div style="text-align:center;padding:16px;background:var(--surface2);border-radius:var(--radius-sm)"><div style="font-size:28px;font-weight:800;color:var(--g2);font-family:var(--mono)" id="crop-max">80%</div><div style="font-size:12px;color:var(--text3);margin-top:4px">Max Moisture</div></div>
+    </div>
+  </div>
+</div>
+
+      <!-- CONTROL -->
+      <div id="page-control" class="page">
+        <div class="page-header"><div class="page-title">Control Panel</div><div class="page-subtitle"></div></div>
+        <div class="mode-toggle-bar">
+          <div class="mtb-left"><h3>System Mode</h3><p id="mode-desc">Auto mode</p></div>
+          <div class="mode-tabs">
+            <div class="mode-tab active" id="tab-auto" onclick="setMode('auto')">🤖 Auto</div>
+            <div class="mode-tab" id="tab-manual" onclick="setMode('manual')">✋ Manual</div>
+          </div>
+        </div>
+        <div class="control-grid">
+          <div class="control-card active-device" id="cc-pump">
+            <span class="cc-icon">💦</span><div class="cc-name">Irrigation Pump</div>
+            <div class="cc-status" id="cc-pump-status">Status: OFF · Auto controlled</div>
+            <button class="cc-btn" id="btn-pump" onclick="toggleDevice('pump')" disabled>Turn ON</button>
+          </div>
+          <div class="control-card" id="cc-fan">
+            <span class="cc-icon">🌀</span><div class="cc-name">Exhaust Fan</div>
+            <div class="cc-status" id="cc-fan-status">Status: OFF · Auto controlled</div>
+            <button class="cc-btn" id="btn-fan" onclick="toggleDevice('fan')" disabled>Turn ON</button>
+          </div>
+          <div class="control-card active-device" id="cc-light">
+            <span class="cc-icon">💡</span><div class="cc-name">Grow Light</div>
+            <div class="cc-status" id="cc-light-status">Status: ON · Auto controlled</div>
+            <button class="cc-btn on" id="btn-light" onclick="toggleDevice('light')" disabled>Turn ON</button>
+          </div>
+          <div class="control-card" id="cc-humidifier">
+          <span class="cc-icon">💧</span><div class="cc-name">Humidifier</div>
+          <div class="cc-status" id="cc-humidifier-status">Status: OFF · Auto controlled</div>
+          <button class="cc-btn" id="btn-humidifier" onclick="toggleDevice('humidifier')" disabled>Turn ON</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- DISEASE DETECTION — NEW CLEAN UI -->
+      <div id="page-disease" class="page">
+        <div class="page-header">
+          <div class="page-title">Disease Detection</div>
+          <div class="page-subtitle">MobileNetV2</div>
+        </div>
+        <div class="disease-layout">
+          <!-- LEFT: upload -->
+          <div>
+            <div class="card">
+              <div class="card-title">📸 Upload Leaf Photo</div>
+              <div class="card-sub">JPG · PNG · WEBP · max 10 MB · best with clear isolated leaf</div>
+              <div class="drop-zone" id="drop-zone">
+                <input type="file" id="img-input" accept="image/*">
+                <span class="dz-icon">🍃</span>
+                <div class="dz-title">Drop your leaf photo here</div>
+                <div class="dz-hint">or click to browse files</div>
+              </div>
+              <div class="preview-wrap" id="preview-wrap">
+                <img id="preview-img" class="preview-img" alt="Preview">
+                <div class="preview-bar">
+                  <span class="preview-name" id="preview-name">image.jpg</span>
+                  <button class="btn-remove" onclick="clearImg()">✕ Remove</button>
+                </div>
+              </div>
+              <button class="btn-analyze" id="btn-analyze" onclick="runAnalysis()" disabled>
+                <span>🔬 Analyse Disease</span>
+                <div class="btn-spin" id="btn-spin"></div>
+              </button>
+
+              <div style="margin-top:20px">
+                <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;font-weight:700;color:var(--text3);margin-bottom:10px">Quick demo — no photo needed</div>
+                <div class="sample-row">
+                  <div class="sample-chip" onclick="demoPredict('healthy')"><span class="sce">✅</span>Healthy</div>
+                  <div class="sample-chip" onclick="demoPredict('blight')"><span class="sce">🍂</span>Late Blight</div>
+                  <div class="sample-chip" onclick="demoPredict('rust')"><span class="sce">🟠</span>Rust</div>
+                  <div class="sample-chip" onclick="demoPredict('spot')"><span class="sce">🔴</span>Leaf Spot</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT: results -->
+          <div>
+            <div class="results-empty" id="results-empty">
+              <div class="re-icon">🌿</div>
+              <p>Upload a leaf photo and press Analyse to see AI results here.</p>
+            </div>
+            <div class="result-panel" id="result-panel">
+              <div class="card result-hero rh-unknown" id="result-hero" style="margin-bottom:20px">
+                <div class="result-tag tag-unknown" id="result-tag">● —</div>
+                <div class="result-disease-name" id="result-dname">—</div>
+                <div class="result-plant" id="result-plant">—</div>
+                <div class="conf-row">
+                  <div class="ring-wrap">
+                    <svg class="ring-svg" width="80" height="80" viewBox="0 0 80 80">
+                      <circle class="ring-bg" cx="40" cy="40" r="33"/>
+                      <circle class="ring-fill" id="ring-fill" cx="40" cy="40" r="33" stroke-dasharray="207.3" stroke-dashoffset="207.3"/>
+                    </svg>
+                    <div class="ring-text"><span id="ring-pct">0%</span><small>conf</small></div>
+                  </div>
+                  <div><div class="conf-label">Confidence score</div><div class="conf-val" id="conf-val">—</div></div>
+                </div>
+              </div>
+              <div class="card" style="margin-bottom:20px">
+                <div class="top5-title">Top 5 predictions</div>
+                <div id="bar-list"></div>
+              </div>
+              <div class="card" id="info-panel">
+                <div class="card-title" id="info-panel-title">Disease Information</div>
+                <div class="info-grid" id="info-grid"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HISTORY -->
+      <div id="page-history" class="page">
+        <div class="page-header">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div><div class="page-title">Scan History</div><div class="page-subtitle">All previous disease detections</div></div>
+            <button onclick="clearHistory()" style="padding:10px 18px;border-radius:var(--radius-xs);border:1.5px solid var(--border);font-size:13px;font-weight:600;color:var(--text3);cursor:pointer;background:var(--surface)">🗑️ Clear all</button>
+          </div>
+        </div>
+        <div class="history-grid" id="history-grid"></div>
+      </div>
+
+      <!-- NOTIFICATIONS -->
+      <div id="page-notifications" class="page">
+        <div class="page-header">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div><div class="page-title">Notifications</div><div class="page-subtitle">System alerts and updates</div></div>
+            <button onclick="clearNotifs()" style="padding:10px 18px;border-radius:var(--radius-xs);border:1.5px solid var(--border);font-size:13px;font-weight:600;color:var(--text3);cursor:pointer;background:var(--surface)">Mark all read</button>
+          </div>
+        </div>
+        <div id="notif-list">
+          <div class="notif-item unread" onclick="markRead(this)"><div class="ni-icon" style="background:rgba(2,136,209,.12)">🌡️</div><div class="ni-body"><div class="ni-title">Weather data connected</div><div class="ni-desc">Live temperature and humidity from your location is now active.</div><div class="ni-time">Just now</div></div></div>
+          <div class="notif-item unread" onclick="markRead(this)"><div class="ni-icon" style="background:rgba(45,106,79,.12)">💧</div><div class="ni-body"><div class="ni-title">Soil moisture low — Tomato</div><div class="ni-desc">Current moisture 42% is below the 45% threshold. Irrigation recommended.</div><div class="ni-time">15 min ago</div></div></div>
+          <div class="notif-item unread" onclick="markRead(this)"><div class="ni-icon" style="background:rgba(211,47,47,.12)">🔴</div><div class="ni-body"><div class="ni-title">Disease alert — Late Blight detected</div><div class="ni-desc">AI model detected Tomato Late Blight with 87.3% confidence.</div><div class="ni-time">1 hr ago</div></div></div>
+        </div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div id="page-settings" class="page">
+        <div class="page-header"><div class="page-title">Settings</div><div class="page-subtitle">Preferences and account</div></div>
+        <div class="grid-2">
+          <div>
+            <div class="settings-section">
+              <div class="ss-title">Appearance</div>
+              <div class="ss-row"><div><div class="ss-label">Dark Mode</div><div class="ss-sub">Switch to dark theme</div></div><div class="toggle" id="dark-toggle" onclick="toggleDark()"></div></div>
+              <div class="ss-row"><div><div class="ss-label">Notifications</div></div><div class="toggle on" id="notif-toggle" onclick="toggleNotifications()"></div></div>
+            </div>
+            <div class="settings-section">
+              <div class="ss-title">Location & Weather</div>
+              <div class="ss-row"><div><div class="ss-label">Current Location</div><div class="ss-sub" id="settings-loc">Detecting…</div></div><button onclick="refreshWeather()" style="padding:8px 14px;border-radius:var(--radius-xs);border:1px solid var(--border);font-size:12px;cursor:pointer;background:var(--surface2)">🔄 Refresh</button></div>
+            </div>
+          </div>
+          <div>
+            <div class="settings-section">
+              <div class="ss-title">Account</div>
+              <div class="ss-row"><div><div class="ss-label">Signed in as</div><div class="ss-sub" id="li-email-display">farmer@agromind.ai</div></div></div>
+              <button class="btn-logout" onclick="doLogout()">Sign Out</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+<script src="js/config.js"></script>
+<script src="js/data.js"></script>
+<script src="js/model.js"></script>
+<script src="js/app.js"></script>
+<script src="js/weather.js"></script>
+<script src="js/sensors.js"></script>
+<script src="js/charts.js"></script>
+<script src="js/controls.js"></script>
+<script src="js/ui.js"></script>
+</body>
+</html>
