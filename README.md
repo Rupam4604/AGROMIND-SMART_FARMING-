@@ -91,8 +91,10 @@ MobileNetV2
      │
      ▼
 Disease Classification
+     │
+     ▼
 
-
+```
 ### AI Model Details
 
 | Parameter | Details |
@@ -103,8 +105,6 @@ Disease Classification
 | Runtime | TensorFlow.js |
 | Inference | Browser-based |
 | Model | AgroMind.keras |
-     │
-     ▼
 
 
 ## 🔧 Hardware Used
@@ -159,7 +159,7 @@ Prediction + Confidence
                        Pump        Fan       Light
                                     │
                                 Humidifier
-
+```
 🔄 Data Flow
 Sensors
    ↓
@@ -246,7 +246,7 @@ AgroMind organizes sensor data, device states, alerts, and system configuration 
     ├── auto_mode
     └── selected_crop
 
-
+```
 ## 💻 Software & Technologies
 
 ### 🔌 Embedded / IoT
@@ -275,3 +275,41 @@ AgroMind organizes sensor data, device states, alerts, and system configuration 
 - TensorFlow.js
 - Keras
 - MobileNetV2
+
+
+## 📁 Project Structure
+
+```text
+AGROMIND-SMART-FARMING-/
+│
+├── Smart_Farming_V2_.ino
+├── agromind_logo/
+├── public/
+│
+├── .firebase
+├── .gitignore
+├── firebase.json
+│
+├── convert_model.js
+├── convert_model.py
+├── fix_convert.py
+│
+├── package.json
+├── package-lock.json
+│
+└── README.md
+
+```
+📂 Main Components
+| File / Folder           | Purpose                              |
+| ----------------------- | ------------------------------------ |
+| `Smart_Farming_V2_.ino` | ESP32 smart farming firmware         |
+| `public/`               | Web application files                |
+| `agromind_logo/`        | AgroMind project assets              |
+| `convert_model.py`      | AI model conversion workflow         |
+| `convert_model.js`      | JavaScript model-related utility     |
+| `fix_convert.py`        | Model conversion support script      |
+| `firebase.json`         | Firebase project configuration       |
+| `package.json`          | Web project dependencies and scripts |
+| `README.md`             | Project documentation                |
+
