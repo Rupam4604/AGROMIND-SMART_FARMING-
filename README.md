@@ -91,6 +91,18 @@ MobileNetV2
      │
      ▼
 Disease Classification
+
+
+### AI Model Details
+
+| Parameter | Details |
+|---|---|
+| Architecture | MobileNetV2 |
+| Input | 160 × 160 RGB Image |
+| Classes | 39 PlantVillage Crop Disease Classes |
+| Runtime | TensorFlow.js |
+| Inference | Browser-based |
+| Model | AgroMind.keras |
      │
      ▼
 Prediction + Confidence
