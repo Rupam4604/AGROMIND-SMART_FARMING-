@@ -369,3 +369,14 @@ Potential future improvements include:
 - Advanced Agricultural Data Analytics
 
 
+## 👨‍💻 Developer
+
+**Rupam Ghosh**
+
+Electronics & Communication Engineering Graduate  
+Embedded Systems | IoT | Robotics | Smart Agriculture
+
+### 🔗 Connect
+
+- GitHub: [Rupam4604](https://github.com/Rupam4604)
+- LinkedIn: [Rupam Ghosh](https://www.linkedin.com/in/rupam-ghosh-0406047119326s)
