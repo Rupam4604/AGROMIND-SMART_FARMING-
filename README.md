@@ -105,5 +105,25 @@ Disease Classification
 | Model | AgroMind.keras |
      │
      ▼
+
+
+## 🔧 Hardware Used
+
+| Component | Quantity |
+|---|---:|
+| ESP32 DevKit V1 | 1 |
+| DHT22 Sensor | 1 |
+| Capacitive Soil Moisture Sensor | 2 |
+| HW-038 Water Level Sensor | 2 |
+| LDR Module | 1 |
+| 4-Channel Relay Module | 1 |
+| 20x4 I2C LCD | 1 |
+| SSD1306 OLED Display | 1 |
+| Buzzers | 3 |
+| Water Pump | 1 |
+| Humidifier | 1 |
+| DC Fan | 1 |
+| LED Grow Light | 1 |
+
 Prediction + Confidence
 
