@@ -356,6 +356,16 @@ The application can also be opened using VS Code Live Server.
 6.View the AI prediction and confidence result.
 
 
+## 🔮 Future Improvements
 
+Potential future improvements include:
+
+- AI-based Crop Recommendation
+- OTA Firmware Updates
+- Dedicated Mobile Application
+- Solar Power System
+- Voice Assistant Support
+- MQTT Communication
+- Advanced Agricultural Data Analytics
 
 
