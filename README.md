@@ -127,3 +127,48 @@ Disease Classification
 
 Prediction + Confidence
 
+
+
+## 🏗️ System Architecture
+
+```text
+                         ┌─────────────────────┐
+                         │      Firebase       │
+                         │  Realtime Database  │
+                         └──────────▲──────────┘
+                                    │
+                                    │ Wi-Fi
+                                    │
+                         ┌──────────┴──────────┐
+                         │        ESP32        │
+                         │   Main Controller   │
+                         └──────────┬──────────┘
+                                    │
+                ┌───────────────────┼───────────────────┐
+                │                   │                   │
+                ▼                   ▼                   ▼
+             Sensors            Automation          Displays
+                │                   │                   │
+        ┌───────┼───────┐           │             ┌─────┴─────┐
+        │       │       │           │             │           │
+      DHT22   Soil     LDR        Relay          LCD        OLED
+              Moisture            Module
+                                    │
+                         ┌──────────┼──────────┐
+                         │          │          │
+                       Pump        Fan       Light
+                                    │
+                                Humidifier
+
+🔄 Data Flow
+Sensors
+   ↓
+ESP32
+   ↓
+Wi-Fi
+   ↓
+Firebase Realtime Database
+   ↓
+AgroMind Web Dashboard
+   ↓
+Monitoring / Control
