@@ -245,3 +245,33 @@ AgroMind organizes sensor data, device states, alerts, and system configuration 
 └── config
     ├── auto_mode
     └── selected_crop
+
+
+## 💻 Software & Technologies
+
+### 🔌 Embedded / IoT
+
+- C/C++
+- Arduino IDE
+- ESP32
+- Wi-Fi
+- Firebase ESP Client Library
+- DHT Library
+- LiquidCrystal I2C
+- Preferences Library
+
+### 🌐 Web
+
+- HTML
+- CSS
+- JavaScript
+- Chart.js
+- Firebase
+
+### 🤖 AI / Machine Learning
+
+- Python
+- TensorFlow
+- TensorFlow.js
+- Keras
+- MobileNetV2
