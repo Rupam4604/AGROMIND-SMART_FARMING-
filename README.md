@@ -313,3 +313,49 @@ AGROMIND-SMART-FARMING-/
 | `package.json`          | Web project dependencies and scripts |
 | `README.md`             | Project documentation                |
 
+
+## 🚀 Web Application Setup
+
+### 1. Install Dependencies
+
+```bash
+npm install
+
+```
+### 2.Convert the AI Model
+Install the required Python packages:
+
+```bash
+pip install tensorflowjs tensorflow
+
+```
+Run the model conversion script:
+```bash
+python convert_model.py
+
+```
+### 3.Start the Application
+
+```bash
+npm start
+```
+The application can also be opened using VS Code Live Server.
+
+### 4.Use the Application
+   
+1.Open the AgroMind web application.
+
+2.Sign in to the dashboard.
+
+3.Open Disease Detection.
+
+4.Upload a plant leaf image.
+
+5.Run the disease analysis.
+
+6.View the AI prediction and confidence result.
+
+
+
+
+
