@@ -380,3 +380,22 @@ Embedded Systems | IoT | Robotics | Smart Agriculture
 
 - GitHub: [Rupam4604](https://github.com/Rupam4604)
 - LinkedIn: [Rupam Ghosh](https://www.linkedin.com/in/rupam-ghosh-0406047119326s)
+
+
+## 📄 License
+
+This project is developed for educational, research, and portfolio purposes.
+
+
+## 📌 Project Status
+
+**Status:** Active Development
+
+AgroMind currently includes:
+
+- ESP32-based environmental monitoring
+- Automated device control
+- Firebase Realtime Database integration
+- Web-based monitoring and control dashboard
+- Weather information
+- Browser-based AI plant disease detection using MobileNetV2
