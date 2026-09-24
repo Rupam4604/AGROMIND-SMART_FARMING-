@@ -70,3 +70,28 @@ The system includes:
 - DHT Failure Detection
 - Emergency Alarm
 - Dedicated Buzzers
+
+
+## 🤖 AI Plant Disease Detection
+
+AgroMind includes a browser-based plant disease detection system powered by **MobileNetV2**.
+
+Users can upload a plant leaf image and run AI-based disease analysis directly through the web application.
+
+### 🧠 AI Pipeline
+
+```text
+Leaf Image
+     │
+     ▼
+Image Pre-processing
+     │
+     ▼
+MobileNetV2
+     │
+     ▼
+Disease Classification
+     │
+     ▼
+Prediction + Confidence
+
