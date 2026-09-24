@@ -215,3 +215,33 @@ The ESP32 communicates with Firebase through Wi-Fi and uploads sensor informatio
 ### 7. Remote Monitoring
 
 The user can monitor and control the system through the AgroMind web dashboard.
+
+
+
+## 🗄️ Firebase Database Structure
+
+AgroMind organizes sensor data, device states, alerts, and system configuration in Firebase Realtime Database.
+
+```text
+/
+├── sensors
+│   ├── temperature
+│   ├── humidity
+│   ├── soil_moisture
+│   ├── water_level
+│   └── light
+│
+├── devices
+│   ├── pump
+│   ├── fan
+│   ├── light
+│   └── humidifier
+│
+├── alerts
+│   ├── low_water
+│   ├── dht_failure
+│   └── emergency
+│
+└── config
+    ├── auto_mode
+    └── selected_crop
