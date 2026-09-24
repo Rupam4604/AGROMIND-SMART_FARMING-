@@ -172,3 +172,46 @@ Firebase Realtime Database
 AgroMind Web Dashboard
    ↓
 Monitoring / Control
+
+
+## 🔄 Working Principle
+
+### 1. ESP32 Initialization
+
+The ESP32 initializes the connected sensors, displays, Wi-Fi communication, and control system.
+
+### 2. Sensor Data Collection
+
+The system reads:
+
+- Temperature
+- Humidity
+- Soil Moisture
+- Water Tank Level
+- Humidifier Tank Level
+- Light Intensity
+
+### 3. Local Monitoring
+
+Sensor readings and system information are displayed on the connected LCD and OLED displays.
+
+### 4. Automation
+
+The automation controller compares sensor readings with configured threshold values.
+
+### 5. Device Control
+
+The relay module controls:
+
+- Water Pump
+- Exhaust Fan
+- Grow Light
+- Humidifier
+
+### 6. Firebase Communication
+
+The ESP32 communicates with Firebase through Wi-Fi and uploads sensor information, device status, alarm information, and configuration data.
+
+### 7. Remote Monitoring
+
+The user can monitor and control the system through the AgroMind web dashboard.
